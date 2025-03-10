@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepL Translator Settings</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<h2>DeepL Translator</h2>
+
+<h3>Select Target Language</h3>
+<select id="languageSelect">
+    <option value="BG">Bulgarian</option>
+    <option value="CS">Czech</option>
+    <option value="DA">Danish</option>
+    <option value="DE">German</option>
+    <option value="EL">Greek</option>
+    <option value="EN">English</option>
+    <option value="ES">Spanish</option>
+    <option value="ET">Estonian</option>
+    <option value="FI">Finnish</option>
+    <option value="FR">French</option>
+    <option value="HU">Hungarian</option>
+    <option value="ID">Indonesian</option>
+    <option value="IT">Italian</option>
+    <option value="JA">Japanese</option>
+    <option value="KO">Korean</option>
+    <option value="LT">Lithuanian</option>
+    <option value="LV">Latvian</option>
+    <option value="NL">Dutch</option>
+    <option value="PL">Polish</option>
+    <option value="PT">Portuguese</option>
+    <option value="RO">Romanian</option>
+    <option value="RU">Russian</option>
+    <option value="SK">Slovak</option>
+    <option value="SL">Slovenian</option>
+    <option value="SV">Swedish</option>
+    <option value="TR">Turkish</option>
+    <option value="UK">Ukrainian</option>
+    <option value="ZH">Chinese</option>
+</select>
+
+<h3>API URL</h3>
+<input type="text" id="apiUrl" placeholder="Enter DeepL API URL" value=""/>
+
+<h3>API Key</h3>
+<input type="text" id="apiKey" placeholder="Enter DeepL API Key" value=""/>
+
+<div class="button-group">
+    <button id="saveButton">Save Settings</button>
+    <button id="testConnectionButton">Test Connection</button>
+</div>
+
+<button id="togglePluginButton">Plugin Status: <strong>Active</strong></button>
+
+<p>Modified for DeepL API integration</p>
+<p>Based on original work by <a href="https://github.com/Vidigal-code/BPT-Pro-Deepl" target="_blank">Kauan Vidigal</a></p>
+<p>API Creator <a href="https://www.deepl.com/docs-api" target="_blank">DeepL</a></p>
+
+<script src="popup.js"></script>
+</body>
+</html>
