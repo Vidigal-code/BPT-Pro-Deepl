@@ -6,16 +6,3 @@
 *.sublime-project
 *.sublime-workspace
 
-
-Thumbs.db
-Desktop.ini
-
-node_modules/
-
-/dist/
-/build/
-
-
-*.log
-*.swp
-*.swo
