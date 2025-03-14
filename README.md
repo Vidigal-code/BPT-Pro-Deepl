@@ -114,6 +114,12 @@ This project is licensed under the **MIT License**.
 
 See the [LICENSE](https://github.com/Vidigal-code/BPT-Pro-Deepl/blob/main/License.mit) file for more details.
 
+# License - API
+
+This project is licensed under the **MIT License**.
+
+See the [LICENSE](https://github.com/LibreTranslate/LibreTranslate/blob/main/LICENSE) file for more details.
+
 ---
 
 ## Credits
