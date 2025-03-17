@@ -67,7 +67,7 @@ Once configured, simply highlight text on any webpage, and the translation will 
 
 ```javascript
 async function translateText(text, targetLanguage, apiUrl, apiKey) {
-    return fetch(apiUrl, {
+    const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
             'Authorization': `DeepL-Auth-Key ${apiKey}`,
@@ -77,27 +77,59 @@ async function translateText(text, targetLanguage, apiUrl, apiKey) {
             text: [text],
             target_lang: targetLanguage.toUpperCase(),
         }),
-    }).then(response => {
-            if (!response.ok) {
-                return response.text().then(errorData => {
-                    throw new Error(`API Error (${response.status}): ${errorData}`);
-                });
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.translations && data.translations.length > 0) {
-                return data.translations[0].text;
-            } else {
-                throw new Error('No translation returned from API');
-            }
-        })
-        .catch(error => {
-            console.error('Translation API error:', error);
-            throw error;
-        });
+    });
+
+    if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(`API Error (${response.status}): ${errorData}`);
+    }
+
+    const data = await response.json();
+    return data.translations[0]?.text || '';
 }
 ```
+
+
+To implement the keyboard shortcuts you mentioned in your code (`Alt + A` to activate the plugin, `Alt + K` to deactivate the plugin, `Alt + G` to toggle the plugin status, and `Alt + T` to test or open the test connection menu), you can modify the existing `setupKeyboardShortcuts` function. Here’s the updated version of the code with these specific shortcuts added:
+
+```javascript
+/**
+ * Sets up keyboard shortcuts to activate/deactivate the plugin, test connection, and toggle the plugin status.
+ */
+setupKeyboardShortcuts() {
+    document.addEventListener('keydown', (event) => {
+        if (event.altKey) {
+            switch (event.key.toUpperCase()) {
+                case 'A': // Alt + A to activate the plugin
+                    this.togglePluginStatus(true);
+                    break;
+                case 'K': // Alt + K to deactivate the plugin
+                    this.togglePluginStatus(false);
+                    break;
+                case 'G': // Alt + G to toggle the plugin status (activate if deactivated, deactivate if active)
+                    event.preventDefault();
+                    this.togglePluginStatus();
+                    break;
+                case 'T': // Alt + T to open the test connection menu
+                    event.preventDefault();
+                    const apiTestPopup = new ApiTestPopup();
+                    apiTestPopup.createApiTestListPopup();
+                    break;
+                default:
+                    break;
+            }
+        }
+    });
+}
+```
+
+### Explanation of the Key Shortcuts:
+1. **Alt + A**: Activates the plugin (calls `togglePluginStatus(true)`).
+2. **Alt + K**: Deactivates the plugin (calls `togglePluginStatus(false)`).
+3. **Alt + G**: Toggles the plugin status. If it is active, it will deactivate it; if it is inactive, it will activate it (calls `togglePluginStatus()`).
+4. **Alt + T**: Opens the test connection menu by calling the `ApiTestPopup` constructor and its `createApiTestListPopup` method.
+
+This will allow users to control the plugin's activation and deactivation with keyboard shortcuts, providing a more seamless user experience. Make sure that the `togglePluginStatus` function and `ApiTestPopup` class are properly implemented in your project for this to work correctly.
 
 ## Technologies Used
 

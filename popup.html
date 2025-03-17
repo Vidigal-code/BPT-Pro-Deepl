@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DeepL Translator Settings</title>
     <link rel="stylesheet" href="css/style.css">
+    <script type="module" src="popup.js"></script>
 </head>
 <body>
 <h2>DeepL Translator</h2>
@@ -47,6 +48,23 @@
 <h3>API Key</h3>
 <input type="text" id="apiKey" placeholder="Enter DeepL API Key" value=""/>
 
+
+<h3>Keyboard Shortcuts</h3>
+<div class="shortcut-settings">
+    <label for="shortcutActivate">Activate Plugin (Alt) +:</label>
+    <input type="text" id="shortcutActivate" placeholder="A" maxlength="1" />
+
+    <label for="shortcutDeactivate">Deactivate Plugin (Alt) +:</label>
+    <input type="text" id="shortcutDeactivate" placeholder="K" maxlength="1" />
+
+    <label for="shortcutTestConnection">Test Connection (Alt) +:</label>
+    <input type="text" id="shortcutTestConnection" placeholder="T" maxlength="1" />
+
+    <label for="shortcutToggle">Toggle Plugin Status (Alt) +:</label>
+    <input type="text" id="shortcutToggle" placeholder="G" maxlength="1" />
+</div>
+
+
 <div class="button-group">
     <button id="saveButton">Save Settings</button>
     <button id="testConnectionButton">Test Connection</button>
@@ -58,6 +76,5 @@
 <p>Based on original work by <a href="https://github.com/Vidigal-code/BPT-Pro-Deepl" target="_blank">Kauan Vidigal</a></p>
 <p>API Creator <a href="https://www.deepl.com/docs-api" target="_blank">DeepL</a></p>
 
-<script src="popup.js"></script>
 </body>
 </html>
