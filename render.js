@@ -4,7 +4,7 @@
  */
 
 /**
- * Manages the translation process for the BPT-Pro-Libretranslate Chrome extension.
+ * Manages the translation process for the BPT-Pro-DeepL Chrome extension.
  * Handles plugin activation, text selection, translation requests, popups, and settings.
  */
 class TranslationManager {
@@ -669,7 +669,7 @@ class TranslationManager {
 
 
 /**
- * Manages the API test popup interface for the BPT-Pro-Libretranslate Chrome extension.
+ * Manages the API test popup interface for the BPT-Pro-DeepL Chrome extension.
  * Provides functionality to add, test, and remove API configurations, and view test history.
  */
 class ApiTestPopup {
@@ -715,7 +715,7 @@ class ApiTestPopup {
          * Create and style the popup title
          */
         const title = document.createElement('h2');
-        title.textContent = 'API Test Manager LibreTranslate';
+        title.textContent = 'API Test Manager DeepL';
         Object.assign(title.style, {
             margin: '0 0 10px 0',
             textAlign: 'center',
