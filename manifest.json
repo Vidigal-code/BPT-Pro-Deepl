@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "DeepL Translation Extension",
   "description": "A browser extension for translating selected text using the DeepL API. Select text on any webpage to get instant translations in your preferred language.",
-  "version": "2.0",
+  "version": "3.0",
   "permissions": [
     "activeTab",
     "storage"

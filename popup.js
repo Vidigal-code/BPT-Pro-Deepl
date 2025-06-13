@@ -2,25 +2,26 @@
  * PopupManager is responsible for handling the settings interface of the translation plugin.
  * It loads, saves, and manages plugin settings including language selection, API URL, API key, and keyboard shortcuts.
  */
-
 class PopupManager {
+    /**
+     * Initializes the PopupManager with default settings for the DeepL API.
+     */
     constructor() {
         /**
          * Initialize the state of the plugin, including plugin status and keyboard shortcuts.
-         * The default API URL is defined for the translation service.
+         * The default API URL is set to DeepL's free API endpoint.
          */
-
-        this.defaultApiUrl = 'https://api-free.deepl.com/v2/translate'; // Default API URL
+        this.defaultApiUrl = 'https://api-free.deepl.com/v2/translate'; // Default DeepL API URL
 
         this.state = {
-            apiUrl: this.defaultApiUrl, // ApiUrl (set to a default if needed)
-            apiKey: '', // ApiKey (set to a default if needed)
-            isPluginActive: false,
+            apiUrl: this.defaultApiUrl, // API URL (set to DeepL default)
+            apiKey: '', // API Key (empty by default)
+            isPluginActive: false, // Plugin active status
             shortcuts: {
-                activate: 'A',
-                deactivate: 'K',
-                testConnection: 'T',
-                toggle: 'G',
+                activate: 'A', // Shortcut to activate plugin
+                deactivate: 'K', // Shortcut to deactivate plugin
+                testConnection: 'T', // Shortcut to test API connection
+                toggle: 'G', // Shortcut to toggle plugin status
             }
         };
 
@@ -29,7 +30,7 @@ class PopupManager {
 
     /**
      * Initializes the PopupManager by loading settings, setting up event listeners,
-     * and setting up listeners for storage changes and messages.
+     * and configuring storage and message listeners.
      */
     init() {
         this.loadSettings();
@@ -40,33 +41,32 @@ class PopupManager {
     }
 
     /**
-     * Loads the settings from Chrome's local storage and updates the popup UI accordingly.
+     * Loads settings from Chrome's local storage and updates the popup UI.
      * Sets default values if no saved settings exist.
      */
     loadSettings() {
         chrome.storage.local.get(['targetLanguage', 'apiUrl', 'apiKey', 'isPluginActive', 'shortcuts'], (result) => {
             if (result.shortcuts) {
-                this.state.shortcuts = {...this.state.shortcuts, ...result.shortcuts};
+                this.state.shortcuts = { ...this.state.shortcuts, ...result.shortcuts };
             }
-            document.getElementById('languageSelect').value = result.targetLanguage || 'EN'; // Set the language select dropdown
-            document.getElementById('apiUrl').value = result.apiUrl || this.defaultApiUrl; // Set the API URL input field
-            document.getElementById('apiKey').value = result.apiKey || ''; // Set the API key input field
+            document.getElementById('languageSelect').value = result.targetLanguage || 'EN'; // Default to 'EN' for DeepL
+            document.getElementById('apiUrl').value = result.apiUrl || this.defaultApiUrl; // Set API URL input
+            document.getElementById('apiKey').value = result.apiKey || ''; // Set API key input
             document.getElementById('shortcutActivate').value = this.state.shortcuts.activate;
             document.getElementById('shortcutDeactivate').value = this.state.shortcuts.deactivate;
             document.getElementById('shortcutTestConnection').value = this.state.shortcuts.testConnection;
             document.getElementById('shortcutToggle').value = this.state.shortcuts.toggle;
-            this.state.isPluginActive = result.isPluginActive || false; // Set plugin active status
-            this.state.apiUrl = result.apiUrl || '';
+            this.state.isPluginActive = result.isPluginActive || false;
+            this.state.apiUrl = result.apiUrl || this.defaultApiUrl;
             this.state.apiKey = result.apiKey || '';
 
-
-            this.updatePluginButton(); // Update the plugin status button
+            this.updatePluginButton(); // Update plugin status button
         });
     }
 
     /**
      * Sets up event listeners for user interactions with the settings interface.
-     * Listens for save, toggle, test connection, and shortcut changes.
+     * Handles save, toggle, test connection, and shortcut changes.
      */
     setupEventListeners() {
         document.getElementById('saveButton').addEventListener('click', () => this.saveSettings());
@@ -78,7 +78,7 @@ class PopupManager {
     }
 
     /**
-     * Sets up a listener for changes to Chrome's local storage and updates the plugin status accordingly.
+     * Sets up a listener for changes to Chrome's local storage to update plugin status.
      */
     setupStorageListener() {
         chrome.storage.onChanged.addListener((changes) => {
@@ -90,7 +90,7 @@ class PopupManager {
     }
 
     /**
-     * Sets up a listener for messages from other parts of the extension, specifically to update the plugin status.
+     * Sets up a listener for messages from other parts of the extension to update plugin status.
      */
     setupMessageListener() {
         chrome.runtime.onMessage.addListener((message) => {
@@ -102,7 +102,7 @@ class PopupManager {
     }
 
     /**
-     * Updates the shortcut keys based on the user input in the settings panel.
+     * Updates shortcut keys based on user input in the settings panel.
      */
     updateShortcuts() {
         this.state.shortcuts.activate = document.getElementById('shortcutActivate').value.toUpperCase() || 'A';
@@ -113,7 +113,7 @@ class PopupManager {
 
     /**
      * Sets up global keyboard shortcuts to control the plugin.
-     * Users can toggle the plugin, test the connection, or change the plugin status using the assigned keyboard shortcuts.
+     * Supports toggling, testing connection, and changing plugin status.
      */
     setupKeyboardShortcuts() {
         document.addEventListener('keydown', (event) => {
@@ -139,7 +139,7 @@ class PopupManager {
     }
 
     /**
-     * Saves the settings to Chrome's local storage, including target language, API URL, API key, and keyboard shortcuts.
+     * Saves settings to Chrome's local storage, including target language, API URL, API key, and shortcuts.
      */
     saveSettings() {
         const selectedLanguage = document.getElementById('languageSelect').value;
@@ -166,19 +166,19 @@ class PopupManager {
     }
 
     /**
-     * Toggles the plugin's active status and updates the UI accordingly.
-     * Optionally, force the plugin to a specific state if provided.
+     * Toggles the plugin's active status and updates the UI.
+     * @param {boolean|null} forceState - Optional state to force (true/false), null to toggle.
      */
     togglePluginStatus(forceState = null) {
         this.state.isPluginActive = forceState !== null ? forceState : !this.state.isPluginActive;
-        chrome.storage.local.set({isPluginActive: this.state.isPluginActive}, () => {
-            this.updatePluginButton(); // Update the plugin button to reflect the new state
-            chrome.runtime.sendMessage({action: 'updatePluginStatus', isActive: this.state.isPluginActive});
+        chrome.storage.local.set({ isPluginActive: this.state.isPluginActive }, () => {
+            this.updatePluginButton();
+            chrome.runtime.sendMessage({ action: 'updatePluginStatus', isActive: this.state.isPluginActive });
         });
     }
 
     /**
-     * Updates the plugin status button to show whether the plugin is active or inactive.
+     * Updates the plugin status button to reflect whether the plugin is active or inactive.
      */
     updatePluginButton() {
         const statusButton = document.getElementById('togglePluginButton');
@@ -187,7 +187,7 @@ class PopupManager {
 
     /**
      * Tests the connection to the DeepL API using the configured API URL and API Key.
-     * Alerts the user whether the connection was successful or not.
+     * Displays the result to the user.
      */
     async testConnection() {
         const apiUrl = document.getElementById('apiUrl').value;
@@ -199,7 +199,7 @@ class PopupManager {
         }
 
         try {
-            const testResult = await ApiTest.testConnection(apiUrl, apiKey); // Test the API connection
+            const testResult = await ApiTest.testConnection(apiUrl, apiKey);
             alert(testResult.success ? "Connection successful!" : `Connection failed: ${testResult.message}`);
         } catch (error) {
             alert(`Error testing connection: ${error.message}`);
@@ -208,25 +208,26 @@ class PopupManager {
 }
 
 /**
- * ApiTest is responsible for testing the connection to the DeepL API by sending a request to the translation endpoint.
+ * ApiTest is responsible for testing the connection to the DeepL API by sending a sample translation request.
  */
 class ApiTest {
-
     /**
      * Tests the connection to the DeepL API by sending a sample translation request.
-     * Returns a success or failure message.
+     * @param {string} apiUrl - The URL of the DeepL API (e.g., 'https://api-free.deepl.com/v2/translate').
+     * @param {string} apiKey - The API key for authentication.
+     * @returns {Promise<Object>} - A promise resolving to an object with success status and message.
      */
     static async testConnection(apiUrl, apiKey) {
         try {
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `DeepL-Auth-Key ${apiKey}`, // API Key header
+                    'Authorization': `DeepL-Auth-Key ${apiKey}`, // DeepL authentication header
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    text: ["Hello, world!"], // Sample text to translate
-                    target_lang: "ES", // Translate to Spanish
+                    text: ["Hello, world!"], // Sample text for translation
+                    target_lang: "ES" // Target language: Spanish
                 }),
             });
 
@@ -235,15 +236,18 @@ class ApiTest {
                 throw new Error(`HTTP error! Status: ${response.status} - ${errorText}`);
             }
 
-            return {success: true, message: "DeepL API working correctly"}; // Return success if API responds
+            const data = await response.json();
+            if (data.translations && data.translations[0].text) {
+                return { success: true, message: "DeepL API connection successful" };
+            } else {
+                throw new Error("Invalid response format");
+            }
         } catch (error) {
             console.error('Connection test failed:', error);
-            return {success: false, message: error.message || "Unknown error"}; // Return error message if connection fails
+            return { success: false, message: error.message || "Unknown error" };
         }
     }
 }
 
-
 // Initialize the PopupManager when the script is executed.
 new PopupManager();
-
