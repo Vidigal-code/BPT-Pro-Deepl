@@ -250,7 +250,5 @@ class ApiTest {
 }
 
 // Initialize PopupManager
-const popupManager = new PopupManager();
+new PopupManager();
 
-// Clean up when popup is closed
-window.addEventListener('unload', () => popupManager.destroy());
