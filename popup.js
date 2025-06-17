@@ -249,5 +249,8 @@ class ApiTest {
     }
 }
 
-// Initialize the PopupManager when the script is executed.
-new PopupManager();
+// Initialize PopupManager
+const popupManager = new PopupManager();
+
+// Clean up when popup is closed
+window.addEventListener('unload', () => popupManager.destroy());

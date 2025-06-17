@@ -1232,4 +1232,13 @@ class ApiTestPopup {
     }
 }
 
-new TranslationManager();
+// Initialize TranslationManager
+const translationManager = new TranslationManager();
+
+// Clean up when content script is unloaded
+window.addEventListener('unload', () => translationManager.destroy());
+
+
+
+
+
